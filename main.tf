@@ -6,7 +6,7 @@ resource "aws_vpc" "Pro-vpc" {
   instance_tenancy = "default"
 
   tags = {
-    Name = "Prod-vpc "
+    Name = "Pro-vpc "
   }
 }
 
@@ -115,9 +115,10 @@ resource "aws_internet_gateway" "Pro-Igw" {
 }
 
 # Internet Gateway Route Table Association
-resource "aws_route_table_association" "Pro-Igw-assoc-Pro-pub-RT" {
+resource "aws_route" "Pro-Igw-assoc-Pro-pub-RT" {
   gateway_id             = aws_internet_gateway.Pro-Igw.id
   route_table_id         = aws_route_table.Pro-pub-RT.id
+  destination_cidr_block = "0.0.0.0/0"
 }
 
 
@@ -148,9 +149,9 @@ resource "aws_nat_gateway" "Pro-Nat-Gateway" {
 
 # NAT Associate with Priv route
 
-resource "aws_route" "Prod-Nat-Gateway-assoc-Pro-priv-RT" {
+resource "aws_route" "Pro-Nat-Gateway-Pro-priv-RT" {
   route_table_id         = aws_route_table.Pro-priv-RT.id
   gateway_id             = aws_nat_gateway.Pro-Nat-Gateway.id
   destination_cidr_block = "0.0.0.0/0"
-}
+} 
 
