@@ -2,11 +2,11 @@
 
 resource "aws_vpc" "Pro-vpc" {
 
-  cidr_block       = "10.0.0.0/16"
-  instance_tenancy = "default"
-
+  cidr_block       = var.vpc-cidr
+  instance_tenancy = var.tenancy
   tags = {
     Name = "Pro-vpc "
+
   }
 }
 
@@ -14,8 +14,8 @@ resource "aws_vpc" "Pro-vpc" {
 
 resource "aws_subnet" "Pro-pub-sub-1" {
   vpc_id            = aws_vpc.Pro-vpc.id
-  cidr_block        = "10.0.1.0/24"
-  availability_zone = "eu-west-2a"
+  cidr_block        = var.Pro-pub-cidr-1
+  availability_zone = var.az1
   tags = {
     Name = "Pro-pub-sub-1"
   }
@@ -23,8 +23,8 @@ resource "aws_subnet" "Pro-pub-sub-1" {
 
 resource "aws_subnet" "Pro-pub-sub-2" {
   vpc_id            = aws_vpc.Pro-vpc.id
-  cidr_block        = "10.0.2.0/24"
-  availability_zone = "eu-west-2a"
+  cidr_block        = var.Pro-pub-cidr-2
+  availability_zone = var.az2
   tags = {
     Name = "Pro-pub-sub-2"
   }
@@ -36,20 +36,17 @@ resource "aws_subnet" "Pro-pub-sub-2" {
 
 resource "aws_subnet" "Pro-priv-subnet-1" {
   vpc_id            = aws_vpc.Pro-vpc.id
-  cidr_block        = "10.0.3.0/24"
-  availability_zone = "eu-west-2b"
-
-  tags = {
-    Name = "Pro-priv-subnet-1"
-  }
+  cidr_block        = var.Pro-priv-cidr-1
+  availability_zone = var.azz1
+ tags = {
+    Name = "Pro-priv-subnet-1" 
+ }
 }
-
 
 resource "aws_subnet" "Pro-priv-subnet-2" {
   vpc_id            = aws_vpc.Pro-vpc.id
-  cidr_block        = "10.0.4.0/24"
-  availability_zone = "eu-west-2b"
-
+  cidr_block        = var.Pro-priv-cidr-2
+  availability_zone = var.azz2
   tags = {
     Name = "Pro-priv-subnet-2"
   }
@@ -153,5 +150,5 @@ resource "aws_route" "Pro-Nat-Gateway-Pro-priv-RT" {
   route_table_id         = aws_route_table.Pro-priv-RT.id
   gateway_id             = aws_nat_gateway.Pro-Nat-Gateway.id
   destination_cidr_block = "0.0.0.0/0"
-} 
+}
 
